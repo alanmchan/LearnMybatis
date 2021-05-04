@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.cm.dao.UserMapper">
+
+    <!-- 启用缓存二级 注意开启二级缓存后，最好将实体类序列化 -->
+<!--    <cache/>-->
+
+    <!-- 自定义缓存 -->
+<!--    <cache eviction="FIFO"-->
+<!--           flushInterval="60000"-->
+<!--           size="512"-->
+<!--           readOnly="true"/>-->
+
+    <!-- 使用第三方缓存 -->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+
+    <!-- 不使用缓存 -->
+<!--    <select id="getUserById" resultType="user" useCache="false">-->
+<!--        select * from user where id = #{id}-->
+<!--    </select>-->
+
+    <select id="getUserById" resultType="user" useCache="true">
+        select * from user where id = #{id}
+    </select>
+
+</mapper>

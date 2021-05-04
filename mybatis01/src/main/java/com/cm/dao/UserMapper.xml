@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace绑定一个对应的DAO/Mapper接口-->
+<mapper namespace="com.cm.dao.UserDao">
+<!--    query-->
+<!--    id等同于JDBC中重写方法的方法名-->
+<!--    resultType返回类型-->
+    <select id="getUserList" resultType="com.cm.pojo.User">
+        select * from test.user
+    </select>
+
+    <select id="getUserById" parameterType="int" resultType="com.cm.pojo.User">
+        select * from test.user where id = #{id}
+    </select>
+
+    <select id="getUserLike" parameterType="String" resultType="com.cm.pojo.User">
+        select * from test.user where name like "%"#{value}"%"
+    </select>
+
+    <insert id="addUser" parameterType="com.cm.pojo.User">
+        insert into test.user (id, name, pwd) values (#{id}, #{name}, #{pwd})
+    </insert>
+
+    <insert id="addUser2" parameterType="map">
+        insert into test.user (id, name, pwd) values (#{code}, #{username}, #{password})
+    </insert>
+
+    <update id="updateUser" parameterType="com.cm.pojo.User">
+        update test.user set name = #{name}, pwd = #{pwd} where id = #{id}
+    </update>
+
+    <delete id="deleteUser" parameterType="int">
+        delete from test.user where id = #{id}
+    </delete>
+
+</mapper>

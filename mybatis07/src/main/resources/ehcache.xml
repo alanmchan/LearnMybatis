@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+         updateCheck="false">
+
+    <!--
+        diskStore: 缓存路径, 参数如下
+            user.home - 用户主目录
+            user.dir - 当前工作路径
+            java.io.tmpdir - 默认临时文件路径
+    -->
+    <diskStore path="./tmpdir/Tmp_EhCache"/>
+
+    <!--
+        defaultCache 默认缓存策略
+        cache 用户自定义缓存策略
+    -->
+    <!--
+        参数说明
+        name: 缓存名称
+        maxElementsInMemory: 缓存最大数目
+        maxElementsOnDisk: 硬盘最大缓存数目
+        eternal: 是否永久有效
+        overflowToDisk: 是否保存到磁盘
+        timeToIdleSeconds: 设置对象失效前允许闲置时间
+        timeToLiveSeconds: 设置对象失效前允许存活时间
+        memoryStoreEvictionPolicy: 缓存策略
+            LRU
+            FIFO
+            LFU
+        clearOnFlush: 内存数量最大时是否清除
+    -->
+    <defaultCache
+            eternal="false"
+            maxElementsInMemory="10000"
+            overflowToDisk="false"
+            diskPersistent="false"
+            timeToIdleSeconds="1800"
+            timeToLiveSeconds="259200"
+            memoryStoreEvictionPolicy="LRU"/>
+
+    <cache
+            name="cloud_user"
+            eternal="false"
+            maxElementsInMemory="5000"
+            overflowToDisk="false"
+            diskPersistent="false"
+            timeToIdleSeconds="1800"
+            timeToLiveSeconds="1800"
+            memoryStoreEvictionPolicy="LRU"/>
+
+</ehcache>

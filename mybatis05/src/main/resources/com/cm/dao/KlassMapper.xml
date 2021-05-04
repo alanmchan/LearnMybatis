@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cm.dao.KlassMapper">
+    <select id="getKlass" resultType="Klass">
+        select * from klass;
+    </select>
+
+    <!-- 一对多的实现， 方式1 按照结果嵌套实现 -->
+    <select id="getKlassById" resultMap="KlassStudent">
+        select s.id sid, s.name sname, k.id kid, k.name kname
+        from student s, klass k
+        where s.kid = k.id and k.id = #{kid}
+    </select>
+
+    <!-- resultMap 类中定义的属性和上面select中查询出来的列的映射 -->
+    <resultMap id="KlassStudent" type="Klass">
+        <result property="id" column="kid"/>
+        <result property="name" column="kname"/>
+
+        <!-- 复杂的属性需要单独处理
+                对象  association
+                集合  collection
+
+             在association中使用javaType 指定属性类型，
+             在collection中使用ofType获取泛型信息
+        -->
+        <collection property="students" ofType="Student">
+            <result property="id" column="sid"/>
+            <result property="name" column="sname"/>
+            <result property="kid" column="kid"/>
+        </collection>
+    </resultMap>
+
+
+    <!-- 一对多的实现，方式2 子查询方式  -->
+    <select id="getKlassById2" resultMap="KlassStudent2">
+        select * from klass where id = #{kid}
+    </select>
+
+    <resultMap id="KlassStudent2" type="Klass">
+        <result property="id" column="id"/>  <!-- 可以省略 -->
+        <result property="name" column="name"/>  <!-- 可以省略 -->
+
+        <!-- students 的类型是List，泛型类型是Student， 用另外一个select查数据，参数是klass中的id -->
+        <collection property="students" javaType="ArrayList" ofType="Student" select="getStudentByKlassId" column="id"/>
+    </resultMap>
+    
+    <select id="getStudentByKlassId" resultType="Student">
+        select * from student where kid = #{kid}
+    </select>
+
+</mapper>
